@@ -10,8 +10,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<General />} />
-      {/* <Route path="/select" element={<Select />} />
-      <Route path="/dnd" element={<DnD />} /> */}
+      <Route path="/select" element={<Select />} />
+      <Route path="/dnd" element={<DnD />} />
     </Routes>
   );
 
