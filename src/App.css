@@ -1,0 +1,72 @@
+.container {
+  width: 100vw;
+  margin: auto;
+  text-align: center;
+}
+
+
+.main {
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+}
+.navigations {
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
+}
+.itemContainer {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.selectItem {
+  width: 500px;
+  height: 200px;
+  border-radius: 12px;
+  border: 5px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  cursor: grab;
+}
+
+.selectLabel {
+  font-size: 40px;
+  
+}
+
+.selectInput {
+  width: 28px;
+  height: 28px;
+
+  cursor: pointer;
+}
+
+.showMore {
+  display: block;
+}
+
+.cardContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  width: 200px;
+  height: 300px;
+  border-radius: 12px;
+  border: 5px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  cursor: grab;
+}
+
