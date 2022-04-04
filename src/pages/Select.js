@@ -126,11 +126,11 @@ export default function Select() {
   }, [searchTerm]);
 
   useEffect(() => {
-    console.log(sorted)
-    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, sorted).then((response) => {
+    console.log(searchResults)
+    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
       if (response.status === 200) {
         console.log('ok')
-        console.log(response.data)
+        setSearchResults(response.data)
       }
     })
       .catch((err) => {
