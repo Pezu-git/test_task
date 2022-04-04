@@ -10,7 +10,9 @@ import axios from 'axios';
 
 export default function Select() {
 
+  
   const [checked, setChecked] = useState([]);
+  const [unchecked, setUnchecked] = useState([]);
   const [state, setState] = useState([]);
   const [searchTerm, setSearchTerm] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
@@ -42,14 +44,22 @@ export default function Select() {
         return prevState;
       })
     }
+    if (!isChecked) {
+      setUnchecked(prevState => {
+        if (!prevState.includes(e.target.value)) {
+          prevState.push(e.target.value)
+        }
+        return prevState;
+      })
+    }
   }
+  
 
   const onSubmit = async (e) => {
     e.preventDefault()
-    await apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/basket/store'}`, checked).then((response) => {
+    await apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/basket/store'}`, [checked, unchecked]).then((response) => {
       if (response.status === 200) {
-        alert('Сохранено в БД')
-        window.location.reload();
+        alert(`ok`)
       }
     })
       .catch((err) => {
@@ -60,6 +70,7 @@ export default function Select() {
 
 
   const dragStartHandler = (e, card) => {
+    console.log(card)
     setCurrentCard(card)
   }
 
@@ -91,12 +102,14 @@ export default function Select() {
     return a.id > b.id ? 1 : -1;
   });
 
-
+  console.log(sorted)
 
 
   useEffect(() => {
+    
     apiClient.get(`${process.env.REACT_APP_SERVER_URL + '/index'}`).then((response) => {
       if (response.status === 200) {
+        console.log(response.data)
         const sorted1 = [].slice.call(response.data).sort((a, b) => {
           if (a.id === b.id) { return 0; }
           return a.id > b.id ? 1 : -1;
@@ -108,7 +121,6 @@ export default function Select() {
           if (i < index)
             newArray.push(sorted1[i])
         }
-
         setSearchResults(newArray);
       }
     })
@@ -124,8 +136,9 @@ export default function Select() {
 
     const newArray = [];
     for (let i = 0; i < results.length; i++) {
-      if (i < index)
+      if (i < index) {
         newArray.push(results[i])
+      } 
     }
     setSearchResults(newArray);
   }, [searchTerm]);
@@ -135,17 +148,13 @@ export default function Select() {
     apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
       if (response.status === 200) {
         console.log('ok')
-        console.log(response.data)
-        console.log(sorted)
       }
     })
       .catch((err) => {
         console.log(err)
       })
-
   })
-
-
+  
 
   return (
     <div className='container'>
@@ -176,7 +185,7 @@ export default function Select() {
               draggable={true}
               className='selectItem'>
               <label className='selectLabel'>
-                <input className='selectInput' type='checkbox' value={item.name} onChange={onChange} />
+                <input className='selectInput' type='checkbox' value={item.name} onChange={onChange} defaultChecked={item.checked} />
                 {item.name}
               </label>
             </div>

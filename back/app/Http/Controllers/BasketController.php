@@ -14,12 +14,17 @@ class BasketController extends Controller
 
     public function store(Request $request)
     {
-        $s = $request->all();
+        $a = $request->all();
+        $s = $a[0];
+        $d = $a[1];
         foreach ($s as $key => $value) {
-
             Basket::create([
                 'name' => $value
             ]);
+        }
+
+        foreach ($d as $key => $value) {
+            Basket::where('name', $value)->delete();
         }
     }
 }

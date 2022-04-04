@@ -4,13 +4,24 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Select;
+use App\Models\Basket;
 use Illuminate\Http\Request;
 
 class SelectController extends Controller
 {
     public function index()
     {
-        return Select::all();
+        $selectAll = Select::all();
+        $basketAll = Basket::all();
+       
+        foreach($selectAll as $key => $value) {
+            for($i = 0; $i < count($basketAll); $i++) {
+                if($value['name'] === $basketAll[$i]['name']) {
+                    $value['checked'] = 'cheked';
+                }
+            }
+        }
+        return $selectAll;
     }
 
     public function update(Request $request)
