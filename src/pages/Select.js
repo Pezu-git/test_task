@@ -81,7 +81,7 @@ export default function Select() {
       }
       return i
     }))
-
+    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults)
     e.target.style.background = 'white'
   }
 
@@ -124,19 +124,19 @@ export default function Select() {
     setSearchResults(newArray);
   }, [searchTerm]);
 
-  useEffect(() => {
-    console.log(searchResults)
-    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
-      if (response.status === 200) {
-        console.log('ok')
-        console.log(response.data)
-      }
-    })
-      .catch((err) => {
-        console.log(err)
-      })
+  // useEffect(() => {
+  //   console.log(searchResults)
+  //   apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
+  //     if (response.status === 200) {
+  //       console.log('ok')
+  //       console.log(response.data)
+  //     }
+  //   })
+  //     .catch((err) => {
+  //       console.log(err)
+  //     })
 
-  })
+  // })
 
 
 
