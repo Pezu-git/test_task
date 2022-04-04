@@ -10,12 +10,15 @@ import axios from 'axios';
 
 
 export default function Select() {
+
   const [checked, setChecked] = useState([]);
   const [state, setState] = useState([]);
   const [searchTerm, setSearchTerm] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
   const [index, setIndex] = useState(5)
+
+  const [currentCard, setCurrentCard] = useState(null)
 
   const handleChange = event => {
     setSearchTerm(event.target.value);
@@ -54,6 +57,52 @@ export default function Select() {
         console.log(err)
       })
   }
+
+  const dragStartHandler = (e, card) => {
+    setCurrentCard(card)
+  }
+
+  const dragEndHandler = (e) => {
+    e.target.style.background = 'white'
+  }
+
+  const dragOverHandler = (e) => {
+    e.preventDefault()
+    e.target.style.background = 'lightgray'
+  }
+
+  const dropHandler = (e, card) => {
+    e.preventDefault()
+    setSearchResults(searchResults.map(i => {
+      if (i.id === card.id) {
+        return { ...i, id: currentCard.id }
+      }
+      if (i.id === currentCard.id) {
+        return { ...i, id: card.id }
+      }
+      return i
+    }))
+
+    e.target.style.background = 'white'
+  }
+
+  const sorted = [].slice.call(searchResults).sort((a, b) => {
+    if (a.id === b.id) { return 0; }
+    return a.id > b.id ? 1 : -1;
+  });
+
+
+  useEffect(() => {
+    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
+      if (response.status === 200) {
+        console.log('ok')
+      }
+    })
+      .catch((err) => {
+        console.log(err)
+      })
+
+  })
 
   useEffect(() => {
     apiClient.get(`${process.env.REACT_APP_SERVER_URL + '/index'}`).then((response) => {
@@ -105,7 +154,24 @@ export default function Select() {
           onChange={handleChange}
         />
         <input type='submit' value='Выбрать' onClick={onSubmit} />
-        <Loading state={searchResults} onChange={onChange} />
+        <div className='itemContainer'>
+          {sorted.map(item => (
+            <div
+              key={item.id}
+              onDragStart={(e) => dragStartHandler(e, item)}
+              onDragLeave={(e) => dragEndHandler(e)}
+              onDragEnd={(e) => dragEndHandler(e)}
+              onDragOver={(e) => dragOverHandler(e)}
+              onDrop={(e) => dropHandler(e, item)}
+              draggable={true}
+              className='selectItem'>
+              <label className='selectLabel'>
+                <input className='selectInput' type='checkbox' value={item.name} onChange={onChange} />
+                {item.name}
+              </label>
+            </div>
+          ))}
+        </div>
       </div>
       <button onClick={loader}>  Load More </button>
       <div>
