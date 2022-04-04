@@ -130,6 +130,7 @@ export default function Select() {
     apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
       if (response.status === 200) {
         console.log('ok')
+        console.log(response.data)
       }
     })
       .catch((err) => {
