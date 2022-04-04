@@ -3,7 +3,6 @@
 
 
 import { Link } from "react-router-dom";
-import Loading from './Loading';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -92,17 +91,7 @@ export default function Select() {
   });
 
 
-  useEffect(() => {
-    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
-      if (response.status === 200) {
-        console.log('ok')
-      }
-    })
-      .catch((err) => {
-        console.log(err)
-      })
 
-  })
 
   useEffect(() => {
     apiClient.get(`${process.env.REACT_APP_SERVER_URL + '/index'}`).then((response) => {
@@ -134,6 +123,18 @@ export default function Select() {
     }
     setSearchResults(newArray);
   }, [searchTerm]);
+
+  useEffect(() => {
+    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults).then((response) => {
+      if (response.status === 200) {
+        console.log('ok')
+      }
+    })
+      .catch((err) => {
+        console.log(err)
+      })
+
+  })
 
 
 
