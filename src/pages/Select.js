@@ -131,6 +131,7 @@ export default function Select() {
       if (response.status === 200) {
         console.log('ok')
         console.log(response.data)
+        console.log(sorted)
       }
     })
       .catch((err) => {
