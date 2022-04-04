@@ -57,6 +57,10 @@ export default function Select() {
       })
   }
 
+  const af = async (e) => {
+    await apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults)
+  }
+
   const dragStartHandler = (e, card) => {
     setCurrentCard(card)
   }
@@ -81,7 +85,7 @@ export default function Select() {
       }
       return i
     }))
-    apiClient.post(`${process.env.REACT_APP_SERVER_URL + '/select/update'}`, searchResults)
+    af()
     e.target.style.background = 'white'
   }
 
