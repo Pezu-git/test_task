@@ -97,13 +97,18 @@ export default function Select() {
   useEffect(() => {
     apiClient.get(`${process.env.REACT_APP_SERVER_URL + '/index'}`).then((response) => {
       if (response.status === 200) {
-        setState(response.data)
+        const sorted1 = [].slice.call(response.data).sort((a, b) => {
+          if (a.id === b.id) { return 0; }
+          return a.id > b.id ? 1 : -1;
+        });
+        setState(sorted1)
 
         const newArray = [];
-        for (let i = 0; i < response.data.length; i++) {
+        for (let i = 0; i < sorted1.length; i++) {
           if (i < index)
-            newArray.push(response.data[i])
+            newArray.push(sorted1[i])
         }
+
         setSearchResults(newArray);
       }
     })
